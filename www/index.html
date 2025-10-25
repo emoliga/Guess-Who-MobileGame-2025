@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Quién es quién?</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://kit.fontawesome.com/fe7b49f033.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <audio id="bg-music" loop autoplay><source src="audio/audio.mp3" type="audio/mpeg"></audio>
+  
+  <img src="img/logo.png" style="width: 100%; margin-top:10px">
+   
+  <div id="home-screen">
+     <div class="menu-buttons">
+         <button id="start-game-btn"><i class="fa-solid fa-play" style="margin-right:10px"></i>Empezar a jugar</button>
+         <button id="howtoplay-btn"><i class="fa-solid fa-circle-question fa-lg" style="margin-right:10px"></i>¿Cómo jugar?</button>
+         <button id="take-photo-btn"><i class="fa-solid fa-camera" style="margin-right:10px"></i>Hacerse una foto</button>
+         <button id="settings-btn" style="margin-top:20px;"><i class="fa-solid fa-gear fa-lg"></i></button>
+     </div>
+  </div>
+  
+  <div id="howtoplay-screen" style="display: none; padding: 10px;">
+      <button id="back-btn" class="return" onclick="window.location.href='index.html'">← Volver</button>
+      <h1 style="text-align: center; color: #a8d98e; font-size: 30px">¿Cómo jugar?</h1>
+      <p style="text-align: left;">
+    1. Elige tu personaje secreto.<br>
+    2. Haz preguntas por categorías para descartar personajes.<br>
+    3. El juego también tratará de adivinar tu personaje.<br>
+    4. ¡Gana quien adivine primero!
+    </p>
+      <p style="margin:30px 0px 0px; color: #7070e5">
+    Aquí puedes visualizar las características de los personajes en base a las preguntas del juego. Pulsa sobre una categoría para desplegar las preguntas disponibles.
+      </p>
+      
+      <div id="categories-container" style="display: grid; grid-template-columns: auto auto;">
+      </div>
+     
+      <div id="howtoplay-categories" style="margin-top: 20px;display: grid;grid-template-columns: repeat(2, 1fr); gap: 10px;"></div>
+      <div id="howtoplay-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 20px;"></div>
+      <button id="reset-howtoplay" style="margin: 20px auto; display: block;">Quitar filtro</button>
+      
+      <div id="explore-characters"></div>
+  </div>
+  
+  <div id="settings-screen" style="display: none; padding: 10px;">
+        <button id="back-from-settings" class="return"> ← Volver </button>
+        
+        <h1 style="text-align: center; color: #a8d98e; font-size: 30px">🎵 Ajustes de sonido</h1>
+        
+        <p style="text-align:center;">Elige una canción de fondo:</p>
+        
+        <div style="text-align:center;">
+            <button class="music-btn" data-src="audio/default.mp3">Tema 1: Nintendo aleatory songs (canción por defecto)</button>
+            <button class="music-btn" data-src="audio/PumPumPum.mp3">Tema 2: PumPumPum - Hugo Moliner feat SunoIA</button>
+            <button class="music-btn" data-src="audio/TutuTitu.mp3">Tema 3: Blinx the Time Sweeper - Shop Theme </button>
+        </div>
+    </div>
+  
+  <div id="info-alert" class="hidden">
+      <p id="info-alert-question"></p>
+      <p id="info-alert-answer"></p>
+      <img id="info-alert-img" src="img/robot-thinking.png" alt="" style="max-width: 80px; margin-top: 10px;">
+  </div>
+ 
+  <div id="character-select-screen">
+      <h2>Elige tu personaje secreto</h2>
+      <div id="character-select-grid"></div>
+  </div>
+  
+  <div id="game" class="hidden">
+    <div id="game-header"> </div>  
+
+    <div id="game-content">
+      <div id="left-panel">
+          <div id="question-category">
+              <h2>Preguntas</h2>
+              
+              <div class="category-block" data-category="genero">
+                  <button class="category-btn" data-category="genero">Género</button>
+                  <div class="category-questions"></div>
+              </div>
+              <div class="category-block" data-category="edad">
+                  <button class="category-btn" data-category="edad">Edad</button>
+                  <div class="category-questions"></div>
+              </div>
+              <div class="category-block" data-category="peloC">
+                  <button class="category-btn" data-category="peloC">Color pelo</button>
+                  <div class="category-questions"></div>
+              </div>
+              <div class="category-block" data-category="peloL">
+                  <button class="category-btn" data-category="peloL">Largura pelo</button>
+                  <div class="category-questions"></div>
+              </div>
+              <div class="category-block" data-category="piel">
+                  <button class="category-btn" data-category="piel">Tono de piel</button>
+                  <div class="category-questions"></div>
+              </div>
+              <div class="category-block" data-category="ropa">
+                  <button class="category-btn" data-category="ropa">Color ropa</button>
+                  <div class="category-questions"></div>
+              </div>
+              <div class="category-block" data-category="accesorios">
+                  <button class="category-btn" data-category="accesorios">Accesorios</button>
+                  <div class="category-questions"></div>
+              </div>
+        </div>
+         
+         <!--<div id="zoom-overlay" class="hidden">
+             <img id="zoom-image" src="" alt="Zoom" />
+          </div>-->
+
+          
+        <button id="guess-btn">¡Ya sé el personaje!</button>
+
+        <div id="questions"></div>
+        <div id="game-question"></div>
+        <div id="game-answer"></div>
+        
+      </div>
+      
+      <div id="right-panel">
+        <h2 id="right-panel-title">Personajes</h2>
+        <div id="user-secret" style="display: none;">
+            <img id="user-secret-img" src="" alt="" style="width: 100%; max-width: 150px; display: inline;"/>
+            <p id="user-secret-name"></p>
+        </div>
+        <div id="characters-grid"></div>
+        <button id="continue-btn">Continuar</button>
+      </div>
+    </div>
+    
+    <div id="thinking-screen" style="display: none; text-align: center;">
+        <img src="img/zrobot.jpg" alt="Pensando..." style="max-width: 150px;">
+        <p style="margin:15px">Mmm... Deja que piense mi pregunta</p>
+        <i class="fa-solid fa-circle fa-beat fa-2xl" style="color: #1e1e1e;"></i>
+    </div>
+    
+    <!--<div id="ai-debug" class="hidden">
+        <h3>🤖 Pensamiento del juego</h3>
+        <div id="ai-target-display"></div>
+        <div id="ai-discarded-grid" class="debug-grid"></div>
+    </div>-->
+
+  </div>
+  
+  <div id="notification" class="hidden">
+      <p id="notification-text"></p>
+      <button id="notification-ok">OK</button>
+  </div>
+  
+  <script src="js/game.js"></script>
+</body>
+</html>
